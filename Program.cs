@@ -20,7 +20,9 @@ namespace AdressBookManagement
             Console.WriteLine("9. Sort Contacts by State");
             Console.WriteLine("10. Sort Contacts by Zip");
             Console.WriteLine("11. Display Contacts");
-            Console.WriteLine("12. Exit");
+            Console.WriteLine("12. Save to Address Book");
+            Console.WriteLine("13. Load to Address Book");
+            Console.WriteLine("14. Exit")
             Console.WriteLine("*****************************************");
 
             Console.Write("Enter your choice: ");
@@ -197,15 +199,28 @@ namespace AdressBookManagement
                     Console.WriteLine("Address Book not found.");
                 }
             }
-            else if (choice == "12")
-            {
-                Console.WriteLine("Exiting the program...");
-                break;
-            }
             else
             {
                 Console.WriteLine("Invalid choice. Please try again.");
             }
+            else if (choice == "12")
+            {
+                Console.Write("Enter the file name to save the Address Book: ");
+                string fileName = Console.ReadLine();
+                addressBookSystem.SaveToFile(fileName);
+            }
+            else if (choice == "13")
+           {
+                Console.Write("Enter the file name to load the Address Book: ");
+                string fileName = Console.ReadLine();
+                addressBookSystem.LoadFromFile(fileName);
+           }
+            else if (choice == "14")
+            {
+                Console.WriteLine("Exiting the program...");
+                break;
+            }
+
 
             Console.WriteLine();
         }
