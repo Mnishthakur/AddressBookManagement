@@ -28,9 +28,19 @@ namespace AdressBookManagement
             contacts.Add(contact);
         }
 
-        public void RemoveContact(Contact contact)
+        public void RemoveContact(string firstName, string lastName)
         {
-            contacts.Remove(contact);
+            Contact contactToRemove = FindContactByName(firstName, lastName);
+
+            if (contactToRemove != null)
+            {
+                contacts.Remove(contactToRemove);
+                Console.WriteLine("Contact deleted successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Contact not found.");
+            }
         }
 
         public void EditContact(string firstName, string lastName)
