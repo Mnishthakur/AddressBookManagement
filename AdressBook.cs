@@ -228,6 +228,82 @@ class AddressBookSystem
         List<Contact> contactsInState = stateToContacts[state];
         return contactsInState.Count;
     }
+
+    public void SaveToFile(string fileName)
+{
+    using (StreamWriter writer = new StreamWriter(fileName))
+    {
+        foreach (AddressBook addressBook in addressBooks.Values)
+        {
+            foreach (Contact contact in addressBook.GetContacts())
+            {
+                writer.WriteLine($"{contact.FirstName},{contact.LastName},{contact.Address},{contact.City},{contact.State},{contact.ZipCode},{contact.PhoneNumber},{contact.Email}");
+            }
+        }
+    }
+
+    Console.WriteLine("Address Book saved to file successfully.");
+}
+
+public void LoadFromFile(string fileName)
+{
+    if (!File.Exists(fileName))
+    {
+        Console.WriteLine("File does not exist.");
+        return;
+    }
+
+    ClearAddressBooks();
+
+    using (StreamReader reader = new StreamReader(fileName))
+    {
+        string line;
+        while ((line = reader.ReadLine()) != null)
+        {
+            string[] parts = line.Split(',');
+
+            if (parts.Length == 8)
+            {
+                string firstName = parts[0];
+                string lastName = parts[1];
+                string address = parts[2];
+                string city = parts[3];
+                string state = parts[4];
+                string zipCode = parts[5];
+                string phoneNumber = parts[6];
+                string email = parts[7];
+
+                Contact contact = new Contact()
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Address = address,
+                    City = city,
+                    State = state,
+                    ZipCode = zipCode,
+                    PhoneNumber = phoneNumber,
+                    Email = email
+                };
+
+                AddContactToAddressBook(contact);
+            }
+        }
+    }
+
+    Console.WriteLine("Address Book loaded from file successfully.");
+}
+
+private void ClearAddressBooks()
+{
+    foreach (AddressBook addressBook in addressBooks.Values)
+    {
+        addressBook.ClearContacts();
+    }
+
+    addressBooks.Clear();
+    cityToContacts.Clear();
+    stateToContacts.Clear();
+}
 }
 }
 
