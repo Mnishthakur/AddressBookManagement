@@ -12,7 +12,25 @@ namespace AdressBookManagement
         public string ZipCode { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            Contact otherContact = (Contact)obj;
+            return string.Equals(FirstName, otherContact.FirstName, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(LastName, otherContact.LastName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(FirstName, LastName);
+        }
     }
+
     class AddressBook
     {
         private List<Contact> contacts;
@@ -24,7 +42,14 @@ namespace AdressBookManagement
 
         public void AddContact(Contact contact)
         {
+            if (contacts.Contains(contact))
+            {
+                Console.WriteLine("Duplicate entry. Contact already exists in the Address Book.");
+                return;
+            }
+
             contacts.Add(contact);
+            Console.WriteLine("Contact added successfully.");
         }
 
         public void RemoveContact(string firstName, string lastName)
@@ -40,51 +65,6 @@ namespace AdressBookManagement
             {
                 Console.WriteLine("Contact not found.");
             }
-        }
-
-        public void EditContact(string firstName, string lastName)
-        {
-            Contact contactToEdit = FindContactByName(firstName, lastName);
-
-            if (contactToEdit != null)
-            {
-                Console.WriteLine("Enter the new contact information:");
-
-                Console.Write("First Name: ");
-                contactToEdit.FirstName = Console.ReadLine();
-
-                Console.Write("Last Name: ");
-                contactToEdit.LastName = Console.ReadLine();
-
-                Console.Write("Address: ");
-                contactToEdit.Address = Console.ReadLine();
-
-                Console.Write("City: ");
-                contactToEdit.City = Console.ReadLine();
-
-                Console.Write("State: ");
-                contactToEdit.State = Console.ReadLine();
-
-                Console.Write("ZIP Code: ");
-                contactToEdit.ZipCode = Console.ReadLine();
-
-                Console.Write("Phone Number: ");
-                contactToEdit.PhoneNumber = Console.ReadLine();
-
-                Console.Write("Email: ");
-                contactToEdit.Email = Console.ReadLine();
-
-                Console.WriteLine("Contact updated successfully.");
-            }
-            else
-            {
-                Console.WriteLine("Contact not found.");
-            }
-        }
-
-        private Contact FindContactByName(string firstName, string lastName)
-        {
-            return contacts.Find(contact => contact.FirstName == firstName && contact.LastName == lastName);
         }
 
         public void DisplayContacts()
@@ -107,6 +87,74 @@ namespace AdressBookManagement
                 }
             }
         }
+
+        private Contact FindContactByName(string firstName, string lastName)
+        {
+            return contacts.Find(contact => string.Equals(contact.FirstName, firstName, StringComparison.OrdinalIgnoreCase) &&
+                                             string.Equals(contact.LastName, lastName, StringComparison.OrdinalIgnoreCase));
+        }
     }
+
+    class AddressBookSystem
+    {
+        private Dictionary<string, AddressBook> addressBooks;
+
+        public AddressBookSystem()
+        {
+            addressBooks = new Dictionary<string, AddressBook>();
+        }
+
+        public void AddAddressBook(string addressBookName)
+        {
+            if (addressBooks.ContainsKey(addressBookName))
+            {
+                Console.WriteLine("Address Book with the same name already exists. Please choose a different name.");
+                return;
+            }
+
+            AddressBook addressBook = new AddressBook();
+            addressBooks.Add(addressBookName, addressBook);
+
+            Console.WriteLine("Address Book created successfully.");
+        }
+
+        public void AddContact(string addressBookName, Contact contact)
+        {
+            if (!addressBooks.ContainsKey(addressBookName))
+            {
+                Console.WriteLine("Address Book not found. Please create the Address Book first.");
+                return;
+            }
+
+            AddressBook addressBook = addressBooks[addressBookName];
+            addressBook.AddContact(contact);
+        }
+
+        public void RemoveContact(string addressBookName, string firstName, string lastName)
+        {
+            if (!addressBooks.ContainsKey(addressBookName))
+            {
+                Console.WriteLine("Address Book not found. Please create the Address Book first.");
+                return;
+            }
+
+            AddressBook addressBook = addressBooks[addressBookName];
+            addressBook.RemoveContact(firstName, lastName);
+        }
+
+        public void DisplayAddressBook(string addressBookName)
+        {
+            if (!addressBooks.ContainsKey(addressBookName))
+            {
+                Console.WriteLine("Address Book not found. Please create the Address Book first.");
+                return;
+            }
+
+            AddressBook addressBook = addressBooks[addressBookName];
+            Console.WriteLine("Contacts in Address Book '{0}':", addressBookName);
+            addressBook.DisplayContacts();
+        }
+    }
+
 }
 
