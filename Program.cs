@@ -27,13 +27,23 @@ namespace AdressBookManagement
             //addressBook.DisplayContacts();
 
             // Edit an existing contact
-            Console.WriteLine("Enter the name of the contact to edit:");
-            Console.Write("First Name: ");
-            string editFirstName = Console.ReadLine();
-            Console.Write("Last Name: ");
-            string editLastName = Console.ReadLine();
+            //Console.WriteLine("Enter the name of the contact to edit:");
+            //Console.Write("First Name: ");
+            //string editFirstName = Console.ReadLine();
+            //Console.Write("Last Name: ");
+            //string editLastName = Console.ReadLine();
 
-            addressBook.EditContact(editFirstName, editLastName);
+            //addressBook.EditContact(editFirstName, editLastName);
+
+            // Delete a contact
+            Console.WriteLine("Enter the name of the contact to delete:");
+            Console.Write("First Name: ");
+            string deleteFirstName = Console.ReadLine();
+            Console.Write("Last Name: ");
+            string deleteLastName = Console.ReadLine();
+
+            addressBook.RemoveContact(deleteFirstName, deleteLastName);
+
 
             addressBook.DisplayContacts();
         }
