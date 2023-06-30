@@ -28,10 +28,6 @@ namespace AdressBookManagement
             contacts.Add(contact);
         }
 
-        //public void RemoveContact(Contact contact)
-        //{
-        //    contacts.Remove(contact);
-        //}
 
         public void DisplayContacts()
         {
