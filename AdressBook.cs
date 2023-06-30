@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace AdressBookManagement
 {
-    class Contact : IComparable<Contact>
+class Contact : IComparable<Contact>
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -18,7 +20,13 @@ namespace AdressBookManagement
         if (other == null)
             return 1;
         
-        int result = string.Compare(LastName, other.LastName, StringComparison.OrdinalIgnoreCase);
+        int result = string.Compare(City, other.City, StringComparison.OrdinalIgnoreCase);
+        if (result == 0)
+            result = string.Compare(State, other.State, StringComparison.OrdinalIgnoreCase);
+        if (result == 0)
+            result = string.Compare(ZipCode, other.ZipCode, StringComparison.OrdinalIgnoreCase);
+        if (result == 0)
+            result = string.Compare(LastName, other.LastName, StringComparison.OrdinalIgnoreCase);
         if (result == 0)
             result = string.Compare(FirstName, other.FirstName, StringComparison.OrdinalIgnoreCase);
 
@@ -49,26 +57,22 @@ class AddressBook
     public void AddContact(Contact contact)
     {
         contacts.Add(contact);
-        contacts.Sort(); // Sort the contacts after adding a new contact
+        contacts.Sort(); // Sort the contacts alphabetically by default
     }
 
-    public void RemoveContact(string firstName, string lastName)
+    public void SortByCity()
     {
-        Contact contactToRemove = contacts.Find(c => c.FirstName == firstName && c.LastName == lastName);
-        if (contactToRemove != null)
-        {
-            contacts.Remove(contactToRemove);
-        }
+        contacts = contacts.OrderBy(c => c.City).ToList();
     }
 
-    public List<Contact> SearchByCity(string city)
+    public void SortByState()
     {
-        return contacts.FindAll(c => c.City == city);
+        contacts = contacts.OrderBy(c => c.State).ToList();
     }
 
-    public List<Contact> SearchByState(string state)
+    public void SortByZipCode()
     {
-        return contacts.FindAll(c => c.State == state);
+        contacts = contacts.OrderBy(c => c.ZipCode).ToList();
     }
 
     public void DisplayContacts()
@@ -183,44 +187,24 @@ class AddressBookSystem
         Console.WriteLine("Contact removed successfully.");
     }
 
-    public void SearchByCity(string city)
+    public List<Contact> SearchByCity(string city)
     {
         if (!cityToContacts.ContainsKey(city))
         {
-            Console.WriteLine("No contacts found in the specified city.");
-            return;
+            return new List<Contact>();
         }
 
-        List<Contact> contactsInCity = cityToContacts[city];
-        int contactCount = contactsInCity.Count;
-
-        Console.WriteLine("Search results in the specified city '{0}':", city);
-        Console.WriteLine("Contact Count: {0}", contactCount);
-
-        foreach (var contact in contactsInCity)
-        {
-            Console.WriteLine(contact.ToString());
-        }
+        return cityToContacts[city];
     }
 
-    public void SearchByState(string state)
+    public List<Contact> SearchByState(string state)
     {
         if (!stateToContacts.ContainsKey(state))
         {
-            Console.WriteLine("No contacts found in the specified state.");
-            return;
+            return new List<Contact>();
         }
 
-        List<Contact> contactsInState = stateToContacts[state];
-        int contactCount = contactsInState.Count;
-
-        Console.WriteLine("Search results in the specified state '{0}':", state);
-        Console.WriteLine("Contact Count: {0}", contactCount);
-
-        foreach (var contact in contactsInState)
-        {
-            Console.WriteLine(contact.ToString());
-        }
+        return stateToContacts[state];
     }
 
     public int GetContactCountByCity(string city)
