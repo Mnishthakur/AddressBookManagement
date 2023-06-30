@@ -13,7 +13,6 @@ namespace AdressBookManagement
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
     }
-
     class AddressBook
     {
         private List<Contact> contacts;
