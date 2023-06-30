@@ -1,7 +1,7 @@
 namespace AdressBookManagement
 {
     class Program
-{
+    {
     static void Main(string[] args)
     {
         AddressBookSystem addressBookSystem = new AddressBookSystem();
@@ -16,8 +16,11 @@ namespace AdressBookManagement
             Console.WriteLine("5. Search Contact by State");
             Console.WriteLine("6. Get Contact Count by City");
             Console.WriteLine("7. Get Contact Count by State");
-            Console.WriteLine("8. Display Contacts");
-            Console.WriteLine("9. Exit");
+            Console.WriteLine("8. Sort Contacts by City");
+            Console.WriteLine("9. Sort Contacts by State");
+            Console.WriteLine("10. Sort Contacts by Zip");
+            Console.WriteLine("11. Display Contacts");
+            Console.WriteLine("12. Exit");
             Console.WriteLine("*****************************************");
 
             Console.Write("Enter your choice: ");
@@ -82,14 +85,38 @@ namespace AdressBookManagement
                 Console.Write("Enter the City to search contacts: ");
                 string city = Console.ReadLine();
 
-                addressBookSystem.SearchByCity(city);
+                List<Contact> contactsInCity = addressBookSystem.SearchByCity(city);
+                if (contactsInCity.Count > 0)
+                {
+                    Console.WriteLine("Contacts in the specified city '{0}':", city);
+                    foreach (var contact in contactsInCity)
+                    {
+                        Console.WriteLine(contact.ToString());
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No contacts found in the specified city.");
+                }
             }
             else if (choice == "5")
             {
                 Console.Write("Enter the State to search contacts: ");
                 string state = Console.ReadLine();
 
-                addressBookSystem.SearchByState(state);
+                List<Contact> contactsInState = addressBookSystem.SearchByState(state);
+                if (contactsInState.Count > 0)
+                {
+                    Console.WriteLine("Contacts in the specified state '{0}':", state);
+                    foreach (var contact in contactsInState)
+                    {
+                        Console.WriteLine(contact.ToString());
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No contacts found in the specified state.");
+                }
             }
             else if (choice == "6")
             {
@@ -109,12 +136,70 @@ namespace AdressBookManagement
             }
             else if (choice == "8")
             {
-                Console.WriteLine("********** Address Book System - Contacts **********");
-                addressBookSystem.DisplayContacts();
-                Console.WriteLine("***************************************************");
+                Console.Write("Enter the name of the Address Book to sort by City: ");
+                string addressBookName = Console.ReadLine();
+
+                if (addressBookSystem.GetAddressBook(addressBookName) != null)
+                {
+                    AddressBook addressBook = addressBookSystem.GetAddressBook(addressBookName);
+                    addressBook.SortByCity();
+                    addressBook.DisplayContacts();
+                }
+                else
+                {
+                    Console.WriteLine("Address Book not found.");
+                }
             }
             else if (choice == "9")
             {
+                Console.Write("Enter the name of the Address Book to sort by State: ");
+                string addressBookName = Console.ReadLine();
+
+                if (addressBookSystem.GetAddressBook(addressBookName) != null)
+                {
+                    AddressBook addressBook = addressBookSystem.GetAddressBook(addressBookName);
+                    addressBook.SortByState();
+                    addressBook.DisplayContacts();
+                }
+                else
+                {
+                    Console.WriteLine("Address Book not found.");
+                }
+            }
+            else if (choice == "10")
+            {
+                Console.Write("Enter the name of the Address Book to sort by Zip: ");
+                string addressBookName = Console.ReadLine();
+
+                if (addressBookSystem.GetAddressBook(addressBookName) != null)
+                {
+                    AddressBook addressBook = addressBookSystem.GetAddressBook(addressBookName);
+                    addressBook.SortByZipCode();
+                    addressBook.DisplayContacts();
+                }
+                else
+                {
+                    Console.WriteLine("Address Book not found.");
+                }
+            }
+            else if (choice == "11")
+            {
+                Console.Write("Enter the name of the Address Book to display contacts: ");
+                string addressBookName = Console.ReadLine();
+
+                if (addressBookSystem.GetAddressBook(addressBookName) != null)
+                {
+                    AddressBook addressBook = addressBookSystem.GetAddressBook(addressBookName);
+                    addressBook.DisplayContacts();
+                }
+                else
+                {
+                    Console.WriteLine("Address Book not found.");
+                }
+            }
+            else if (choice == "12")
+            {
+                Console.WriteLine("Exiting the program...");
                 break;
             }
             else
@@ -124,8 +209,6 @@ namespace AdressBookManagement
 
             Console.WriteLine();
         }
-    }
-}
     }
 }
 
