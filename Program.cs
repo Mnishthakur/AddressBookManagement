@@ -24,8 +24,18 @@ namespace AdressBookManagement
             addressBook.AddContact(contact1);
 
             // Display all contacts in the address book
-            addressBook.DisplayContacts();
+            //addressBook.DisplayContacts();
 
+            // Edit an existing contact
+            Console.WriteLine("Enter the name of the contact to edit:");
+            Console.Write("First Name: ");
+            string editFirstName = Console.ReadLine();
+            Console.Write("Last Name: ");
+            string editLastName = Console.ReadLine();
+
+            addressBook.EditContact(editFirstName, editLastName);
+
+            addressBook.DisplayContacts();
         }
     }
 
