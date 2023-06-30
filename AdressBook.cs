@@ -28,6 +28,55 @@ namespace AdressBookManagement
             contacts.Add(contact);
         }
 
+        public void RemoveContact(Contact contact)
+        {
+            contacts.Remove(contact);
+        }
+
+        public void EditContact(string firstName, string lastName)
+        {
+            Contact contactToEdit = FindContactByName(firstName, lastName);
+
+            if (contactToEdit != null)
+            {
+                Console.WriteLine("Enter the new contact information:");
+
+                Console.Write("First Name: ");
+                contactToEdit.FirstName = Console.ReadLine();
+
+                Console.Write("Last Name: ");
+                contactToEdit.LastName = Console.ReadLine();
+
+                Console.Write("Address: ");
+                contactToEdit.Address = Console.ReadLine();
+
+                Console.Write("City: ");
+                contactToEdit.City = Console.ReadLine();
+
+                Console.Write("State: ");
+                contactToEdit.State = Console.ReadLine();
+
+                Console.Write("ZIP Code: ");
+                contactToEdit.ZipCode = Console.ReadLine();
+
+                Console.Write("Phone Number: ");
+                contactToEdit.PhoneNumber = Console.ReadLine();
+
+                Console.Write("Email: ");
+                contactToEdit.Email = Console.ReadLine();
+
+                Console.WriteLine("Contact updated successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Contact not found.");
+            }
+        }
+
+        private Contact FindContactByName(string firstName, string lastName)
+        {
+            return contacts.Find(contact => contact.FirstName == firstName && contact.LastName == lastName);
+        }
 
         public void DisplayContacts()
         {
@@ -50,5 +99,6 @@ namespace AdressBookManagement
             }
         }
     }
+
 }
 
