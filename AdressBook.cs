@@ -105,6 +105,7 @@ namespace AdressBookManagement
                     Console.WriteLine("ZIP Code: {0}", contact.ZipCode);
                     Console.WriteLine("Phone Number: {0}", contact.PhoneNumber);
                     Console.WriteLine("Email: {0}\n", contact.Email);
+                    
                 }
             }
         }
